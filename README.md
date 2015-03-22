@@ -1,7 +1,7 @@
 CleanData
 =========
 
-repo for the Cousera course 'clean and tidy data'
+repo for the Coursera course 'clean and tidy data'
 
 ======================================
 R Script for analysis of 
@@ -43,11 +43,8 @@ B. Data Prep. Read in the relevant files:
 C. Preparatory step that creates a character vector 'labels', which is attached to the relevant datasets via colnames().
 D. Tasks 1 to 5 are solved in connected steps within the script.
 	
-	Task 1: Creates a complete dataset in three steps. First, two separate datasets 'test' and 'train' are 		created. These are merged to 'total'.
-	Task 2: provides two solutions to exercise 2, selecting 76 variables that include estimates of means or standard deviations; a data frame with 10297 observations of 78 variables called 'workingset' and a reshaped data frame called 'tidytotal', which provides 782572 observations of 5 variables. NOTE that all further steps are performed using the second, reshaped data frame 'tidytotal'.
-	
-	Following the information provided in features_info.txt that comes along the original dataset, the estimates for means and standard deviations for the 17 feature variables were selected, resulting in a total of 76 variables (mean or standard deviation). MeanFreq was listed as an additional variable that was estimated, but not included in the selection as it represents the mean frequency of a variable, not the mean of it. Moreover, the means and standard deviations calculated for the angle between the vectors were also excluded. 
-	
+	Task 1: Creates a complete dataset in three steps. First, two separate datasets 'test' and 'train' are created. These are merged to 'total'.
+	Task 2: provides two solutions to exercise 2. Using grep() to select 78 variables that include estimates of means or standard deviations, a data frame with 10297 observations of 78 variables called 'workingset' is created. A subset of the total dataset that includes information on 'subject' and 'activity' is merged with the workingset. The second solution is a reshaped data frame called 'tidytotal', which provides 782572 observations of 5 variables. NOTE that all further steps are performed using the second, reshaped data frame 'tidytotal'.
 	Task 3: adds a column with descriptive activity names to 'tidytotal'.
 	Task 4: assign descriptive column names to 'tidytotal'.
 	Task 5: creates a tidy data set, called 'tidydata', with the average of each variable for each activity and each subject in three steps. 

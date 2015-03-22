@@ -1,6 +1,6 @@
 ##################################Getting started ###############################################
 #set working directory
-setwd()
+setwd("C:/statistic//cousera_clean data/UCI HAR Dataset/")
 
 #load packages
 library(reshape)
@@ -51,8 +51,13 @@ str(total)
 
 #################################TASK 2###########################################
 #extract the measurements on the mean and standard deviation for each measurement
-workingset <- subset(total, select = c("subject", "activity", "tBodyAcc_meanX", "tBodyAcc_meanY", "tBodyAcc_meanZ", "tBodyAccJerk_meanX", "tBodyAccJerk_meanY", "tBodyAccJerk_meanZ", "tBodyGyro_meanX","tBodyGyro_meanY", "tBodyGyro_meanZ","tBodyGyroJerk_meanX", "tBodyGyroJerk_meanY","tBodyGyroJerk_meanZ","tBodyAccMag_mean","tGravityAccMag_mean","tBodyAccJerkMag_mean","tBodyGyroMag_mean","tBodyGyroJerkMag_mean","fBodyAcc_meanX","fBodyAcc_meanY","fBodyAcc_meanZ","fBodyAcc-meanFreqX","fBodyAcc-meanFreqY","fBodyAcc-meanFreqZ","fBodyAccJerk_meanX","fBodyAccJerk_meanY","fBodyAccJerk_meanZ", "fBodyAccJerk-meanFreqX", "fBodyAccJerk-meanFreqY","fBodyAccJerk-meanFreqZ", "fBodyGyro_meanX","fBodyGyro_meanY", "fBodyGyro_meanZ", "fBodyGyro-meanFreqX", "fBodyGyro-meanFreqY", "fBodyGyro-meanFreqZ", "fBodyAccMag_mean", "fBodyAccMag-meanFreq", "fBodyBodyAccJerkMag_mean", "fBodyBodyAccJerkMag-meanFreq", "fBodyBodyGyroMag_mean", "fBodyBodyGyroMag-meanFreq", "fBodyBodyGyroJerkMag_mean", "fBodyBodyGyroJerkMag-meanFreq", "angle_tBodyAccMean_gravity","tBodyAcc_stdX", "tBodyAcc_stdY", "tBodyAcc_stdZ", "tGravityAcc_stdX", "tGravityAcc_stdY", "tGravityAcc_stdZ", "tBodyAccJerk_stdX", "tBodyAccJerk_stdY", "tBodyAccJerk_stdZ", "tBodyGyro_stdX", "tBodyGyro_stdY", "tBodyGyro_stdZ", "tBodyGyroJerk_stdX", "tBodyGyroJerk_stdY", "tBodyGyroJerk_stdZ", "tBodyAccMag_std", "tGravityAccMag_std", "tBodyAccJerkMag_std", "tBodyGyroMag_std", "tBodyGyroJerkMag_std", "fBodyAcc_stdX", "fBodyAcc_stdZ", "fBodyAccJerk_stdX", "fBodyAccJerk_stdY", "fBodyAccJerk_stdZ", "fBodyGyro_stdX", "fBodyGyro_stdY", "fBodyGyro_stdZ", "fBodyAccMag_std", "fBodyBodyAccJerkMag_std", "fBodyBodyGyroMag_std", "fBodyBodyGyroJerkMag_std"))
-str(workingset)
+grep.features <- grep("mean|std", file_features$V2, value = TRUE)
+workingset <- total[, grep.features]
+
+#extract 'subject' and 'activity' from total dataset
+subject.activity <- total[,1:2] 
+#coloumn bind 'subject' and 'activity' to workingset
+workingset <- cbind(workingset, subject.activity) 
 
 #reshape dataset to create 4 variables
 tidytotal <- melt(total, id= c("subject", "activity"), measure.vars = c("tBodyAcc_meanX", "tBodyAcc_meanY", "tBodyAcc_meanZ", "tBodyAccJerk_meanX", "tBodyAccJerk_meanY", "tBodyAccJerk_meanZ", "tBodyGyro_meanX","tBodyGyro_meanY", "tBodyGyro_meanZ","tBodyGyroJerk_meanX", "tBodyGyroJerk_meanY","tBodyGyroJerk_meanZ","tBodyAccMag_mean","tGravityAccMag_mean","tBodyAccJerkMag_mean","tBodyGyroMag_mean","tBodyGyroJerkMag_mean","fBodyAcc_meanX","fBodyAcc_meanY","fBodyAcc_meanZ","fBodyAcc-meanFreqX","fBodyAcc-meanFreqY","fBodyAcc-meanFreqZ","fBodyAccJerk_meanX","fBodyAccJerk_meanY","fBodyAccJerk_meanZ", "fBodyAccJerk-meanFreqX", "fBodyAccJerk-meanFreqY","fBodyAccJerk-meanFreqZ", "fBodyGyro_meanX","fBodyGyro_meanY", "fBodyGyro_meanZ", "fBodyGyro-meanFreqX", "fBodyGyro-meanFreqY", "fBodyGyro-meanFreqZ", "fBodyAccMag_mean", "fBodyAccMag-meanFreq", "fBodyBodyAccJerkMag_mean", "fBodyBodyAccJerkMag-meanFreq", "fBodyBodyGyroMag_mean", "fBodyBodyGyroMag-meanFreq", "fBodyBodyGyroJerkMag_mean", "fBodyBodyGyroJerkMag-meanFreq", "angle_tBodyAccMean_gravity","tBodyAcc_stdX", "tBodyAcc_stdY", "tBodyAcc_stdZ", "tGravityAcc_stdX", "tGravityAcc_stdY", "tGravityAcc_stdZ", "tBodyAccJerk_stdX", "tBodyAccJerk_stdY", "tBodyAccJerk_stdZ", "tBodyGyro_stdX", "tBodyGyro_stdY", "tBodyGyro_stdZ", "tBodyGyroJerk_stdX", "tBodyGyroJerk_stdY", "tBodyGyroJerk_stdZ", "tBodyAccMag_std", "tGravityAccMag_std", "tBodyAccJerkMag_std", "tBodyGyroMag_std", "tBodyGyroJerkMag_std", "fBodyAcc_stdX", "fBodyAcc_stdZ", "fBodyAccJerk_stdX", "fBodyAccJerk_stdY", "fBodyAccJerk_stdZ", "fBodyGyro_stdX", "fBodyGyro_stdY", "fBodyGyro_stdZ", "fBodyAccMag_std", "fBodyBodyAccJerkMag_std", "fBodyBodyGyroMag_std", "fBodyBodyGyroJerkMag_std"))
@@ -72,12 +77,13 @@ tidytotal$activity_names <- ifelse(tidytotal$activity == 1, 'WALKING',
 colnames(tidytotal) <- c( 'subject', 'activity', 'feature', 'value', 'activity_names')
 
 ################################## TASK 5 ###########################################
-#create tidy data set with the average of each variable for each activity and each subject
+#load package 'reshape2' here as it otherwise masks melt() from the 'reshape' package
 library(reshape2)
+#create tidy data set with the average of each variable for each activity and each subject
 tidydata_subject <- dcast(tidytotal, subject ~ feature, mean)
 tidydata_activity <- dcast(tidytotal, activity_names ~ feature, mean)
 
-tidydata <- merge(tidydata_subject, tidydata_activity, all=TRUE)
+tidydata <- merge(tidydata_subject, tidydata_activity, all=TRUE) #assigns NA when 'subject' is provided but not 'activity' and vice versa
 str(tidydata)
 
 ######################## save output into text file #################################
