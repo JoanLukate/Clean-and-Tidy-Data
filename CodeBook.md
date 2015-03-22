@@ -34,7 +34,7 @@ for a complete list of original variables and files see the documentation provid
 2. TRANSFORMATIONS/ CHANGES TO DATASET
 
 	A. Preparatory step. Changed the class of the variable names as provided in featuresadded.txt from 'factor' to 'character'. The result was stored in 		'labels'.
-	B. a subset of the complete dataset 'total' was created that only includes features that specify means and standard deviations. For selection criteria see README.
+	B. a subset of the complete dataset 'total' was created that only includes features that specify means and standard deviations using grep(). See also README.
 	C. the subset was reshaped using melt() to simplify further analysis. The resulting dataframe 'tidytotal' includes 4 variables: subject, activity, feature and value.
 	D. an additional column 'activity_names' was added to 'tidytotal' to provide descriptive activity names
 	E. The tidy, reshaped dataframe was casted twice using dcast() to get the average of each variable for each activity and each subject. The resulting dataframes were merged to provide a tidy dataframe called 'tidydata'. Note that merge(x, y, ..., all = TRUE) was used to include NAs for subject or activity, where they were missing in the other dataset. 
